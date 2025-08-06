@@ -65,7 +65,7 @@ function KitchenMenu() {
       }));
 
       const { data } = await axios.put(
-        `https://khanakhazana-4wqp.onrender.com/kitchen/menu`,
+        `http://localhost:4000/kitchen/menu`,
         { kitchenId, menu: menuToSave },
         { headers: { "Content-Type": "application/json" } }
       );

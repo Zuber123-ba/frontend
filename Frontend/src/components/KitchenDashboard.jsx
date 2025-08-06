@@ -28,7 +28,7 @@ const KitchenDashboard = () => {
         setKitchenName(storedKitchen.name || "Kitchen");
 
         const response = await axios.get(
-          `https://khanakhazana-4wqp.onrender.com/kitchen/${storedKitchen._id}/transactions`
+          `http://localhost:4000/kitchen/${storedKitchen._id}/transactions`
         );
 
         if (response.data.transactions) {
@@ -56,27 +56,37 @@ const KitchenDashboard = () => {
     starter: 45,
   };
 
-  const weeklyData = [0, 0, 0, 0];
-  const currentMonth = new Date().getMonth();
-
-  transactions.forEach((tx) => {
-    const date = new Date(tx.date);
-    if (date.getMonth() === currentMonth) {
-      const week = Math.floor((date.getDate() - 1) / 7);
-      if (week >= 0 && week < 4) weeklyData[week]++;
-    }
-  });
-
   const totalRevenue = transactions.reduce(
     (sum, tx) => sum + (revenueMap[tx.plan] || 0),
     0
   );
 
+  const calculateWeeklyTrend = () => {
+    const weeklyMeals = [0, 0, 0, 0]; // Assuming 4 weeks in a month
+    const currentDate = new Date(); // Today's date
+
+    transactions.forEach(tx => {
+      const transactionDate = new Date(tx.date);
+      const weekIndex = Math.floor((currentDate - transactionDate) / (7 * 24 * 60 * 60 * 1000));
+      if (weekIndex >= 0 && weekIndex < 4) {
+        weeklyMeals[weekIndex] += tx.mealCount; // Assuming tx.mealCount exists
+      }
+    });
+
+    return weeklyMeals;
+  };
+
+  const weeklyTrendData = calculateWeeklyTrend();
+
   const downloadPDF = () => {
     const doc = new jsPDF();
     doc.text(`${kitchenName} - Transactions Report`, 20, 15);
+    
+    // Add total revenue to the PDF
+    doc.text(`Total Revenue: ₹${totalRevenue}`, 20, 25);
+    
     autoTable(doc, {
-      startY: 20,
+      startY: 30,
       head: [["Date", "Customer", "Plan", "Amount"]],
       body: transactions.slice(0, 20).map((tx) => [
         new Date(tx.date).toLocaleDateString(),
@@ -85,7 +95,47 @@ const KitchenDashboard = () => {
         `₹${revenueMap[tx.plan] || 0}`,
       ]),
     });
+    
     doc.save("transactions_report.pdf");
+  };
+
+  const downloadGSTBill = () => {
+    const gstRate = 18; // Example GST rate
+    const totalGST = totalRevenue * (gstRate / 100);
+    const cgst = totalGST / 2; // Half of the total GST for CGST
+    const sgst = totalGST / 2; // Half of the total GST for SGST
+    const doc = new jsPDF();
+    
+    // Invoice Header
+    doc.setFontSize(20);
+    doc.text("GST Invoice", 20, 15);
+    doc.setFontSize(12);
+    doc.text(`Invoice No: ${Math.floor(Math.random() * 10000)}`, 20, 25); // Random invoice number
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 35);
+    
+    // Owner Information
+    doc.text(`Owner: ${kitchenName}`, 20, 45);
+    doc.text(`GSTIN: YOUR_GSTIN_HERE`, 20, 55); // Replace with your GSTIN
+    doc.text(`Address: YOUR_ADDRESS_HERE`, 20, 65); // Replace with your address
+    
+    // Customer Details
+    if (transactions.length > 0) {
+      const customer = transactions[0].customerName; // Example: taking the first customer's name
+      doc.text(`Customer: ${customer}`, 20, 75);
+      doc.text(`Customer GSTIN: CUSTOMER_GSTIN_HERE`, 20, 85); // Replace with customer's GSTIN
+    }
+
+    // Total Revenue and GST
+    doc.text(`Total Revenue: ₹${totalRevenue}`, 20, 95);
+    doc.text(`CGST (${gstRate / 2}%): ₹${(cgst).toFixed(2)}`, 20, 105);
+    doc.text(`SGST (${gstRate / 2}%): ₹${(sgst).toFixed(2)}`, 20, 115);
+    doc.text(`Total Amount (Including GST): ₹${(totalRevenue + totalGST).toFixed(2)}`, 20, 125);
+    
+    // Footer
+    doc.setFontSize(10);
+    doc.text("Thank you for your business!", 20, 145);
+    
+    doc.save("owner_gst_invoice.pdf");
   };
 
   return (
@@ -107,6 +157,13 @@ const KitchenDashboard = () => {
               >
                 <ArrowDownTrayIcon className="h-5 w-5" />
                 Download transaction PDF
+              </button>
+              <button
+                onClick={downloadGSTBill}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-600 text-white rounded hover:bg-green-700"
+              >
+                <ArrowDownTrayIcon className="h-5 w-5" />
+                Download GST Bill
               </button>
             </div>
 
@@ -148,7 +205,7 @@ const KitchenDashboard = () => {
                 <h3 className="text-lg font-semibold mb-4">Weekly Trend</h3>
                 <div className="h-64">
                   <LineChart
-                    series={[{ data: weeklyData, label: "Meals Served", showMarkers: true }]}
+                    series={[{ data: weeklyTrendData, label: "Meals Served", showMarkers: true }]}
                     xAxis={[{ data: ["Week 1", "Week 2", "Week 3", "Week 4"], scaleType: "point" }]}
                     colors={["#6366F1"]}
                   />
@@ -159,7 +216,7 @@ const KitchenDashboard = () => {
             {/* Recent Transactions Table */}
             <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
               <h2 className="text-xl font-semibold mb-4">Recent Transactions</h2>
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto" style={{ maxHeight: '300px', overflowY: 'auto' }}>
                 <table className="w-full">
                   <thead>
                     <tr className="text-left text-gray-600 border-b">
@@ -170,7 +227,7 @@ const KitchenDashboard = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {transactions.slice(0, 5).map((tx, i) => (
+                    {transactions.slice(0, 15).map((tx, i) => (
                       <tr key={i} className="border-b last:border-b-0 hover:bg-gray-50">
                         <td className="py-3">{new Date(tx.date).toLocaleDateString()}</td>
                         <td className="py-3 font-medium">{tx.customerName}</td>

@@ -9,7 +9,7 @@ function Footer() {
         <nav className="grid grid-flow-col gap-4">
           {/* Update "Contact Us" to send an email */}
           <a
-            href="mailto:altafshekali16@gmail.com"
+            href="zuberbagawan8@gmail.com"
             className="link link-hover"
           >
             Contact Us
@@ -85,7 +85,17 @@ function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
+            >{/* Instagram */}
+            <a
+             href="https://instagram.com"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="Instagram"
+             className="text-blue-500 hover:underline" // Optional: Add styling
             >
+  
+</a>
+
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -100,10 +110,50 @@ function Footer() {
         </nav>
 
         {/* Footer Text */}
-        <aside>
-          <p>Contact us at: <a href="mailto:altafshekali16@gmail.com">altafshekali16@gmail.com</a></p>
-          <p>Copyright © {new Date().getFullYear()} - All rights reserved by Khana Khazana</p>
-        </aside>
+    <aside className="space-y-2">
+  <p>
+    Contact us at: 
+    <p>
+    Contact us at: 
+    <a href="mailto : mraltamash23@gmail.com" className="text-blue-600 hover:underline">
+      mraltamash23@gmail.com
+    </a>/ 
+    <a href="mailto: zuberbagawan8@gmail.com" className="text-blue-600 hover:underline">
+      zuberbagawan8@gmail.com
+    </a>/ 
+    <a href="mailto: sadiq@gmail.com" className="text-blue-600 hover:underline">
+      sadiq@gmail.com
+    </a>
+  </p>
+
+  </p>
+  
+  <p className="flex items-center">
+    Technical Support:
+    <span className="flex space-x-4 ml-2"> {/* Flex container for horizontal layout */}
+      {['8431892612', '7411776939', '8123073259'].map((number, index) => (
+        <a 
+          key={index}
+          href={`tel:${number}`}
+          className="flex items-center text-blue-600 hover:underline"
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-5 w-5 mr-1" 
+            viewBox="0 0 20 20" 
+            fill="currentColor"
+          >
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+          </svg>
+          {number}
+        </a>
+      ))}
+    </span>
+  </p>
+</aside>
+
+
+
       </footer>
     </div>
   );

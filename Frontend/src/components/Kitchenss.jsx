@@ -11,7 +11,7 @@ function Kitchenss() {
   useEffect(() => {
     const getKitchens = async () => {
       try {
-        const res = await axios.get("https://khanakhazana-4wqp.onrender.com/kitchen");
+        const res = await axios.get("http://localhost:4000/kitchen");
         setKitchens(res.data);
       } catch (error) {
         console.error("Error fetching kitchen data:", error);
@@ -40,7 +40,6 @@ function Kitchenss() {
           where magic happens daily
         </p>
 
-        {/* Enhanced Search Bar */}
         <div className="relative flex justify-center my-12">
           <div className="w-full max-w-2xl bg-gradient-to-r from-green-400 to-orange-500 p-1 rounded-2xl shadow-xl">
             <div className="flex items-center bg-white dark:bg-gray-800 rounded-xl px-4 py-3">
@@ -94,7 +93,7 @@ function Kitchenss() {
                 <div className="relative overflow-hidden rounded-t-2xl">
                   {item.images && item.images.length > 0 ? (
                     <img
-                      src={`https://khanakhazana-4wqp.onrender.com/${item.images[0]}`}
+                      src={`http://localhost:4000/${item.images[0]}`}
                       alt={item.name}
                       className="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300"
                     />
@@ -144,14 +143,24 @@ function Kitchenss() {
                         d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                       />
                     </svg>
-                    <span>{item.location || "Location details coming soon"}</span>
+                    {item.location ? (
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline"
+                      >
+                        {item.location}
+                      </a>
+                    ) : (
+                      <span>Location details coming soon</span>
+                    )}
                   </div>
 
                   <Link to={`/kitchen/${item._id}`}
                    className="inline-block w-full text-center bg-gradient-to-r from-green-600 to-green-500 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-300">
                     Explore Kitchen →
                   </Link>
- 
                 </div>
               </div>
             ))

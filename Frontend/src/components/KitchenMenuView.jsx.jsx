@@ -14,7 +14,7 @@ const KitchenMenuView = () => {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const response = await axios.get(`https://khanakhazana-4wqp.onrender.com/kitchen/menu?kitchenId=${kitchenId}`);
+        const response = await axios.get(`http://localhost:4000/kitchen/menu?kitchenId=${kitchenId}`);
         
         const menuData = response.data;
 

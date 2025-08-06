@@ -23,12 +23,12 @@ function Signup() {
       password: data.password
     };
 
-    await axios.post("https://khanakhazana-4wqp.onrender.com/user/signup", userInfo)  // Updated endpoint
+    await axios.post("http://localhost:4000/user/signup", userInfo)
       .then((res) => {
         console.log(res.data);
         if (res.data) {
           toast.success("Signed in successfully");
-          navigate("/")
+          navigate("/");
         }
 
         localStorage.setItem("Users", JSON.stringify(res.data.user));
@@ -43,8 +43,6 @@ function Signup() {
 
   return (
     <div className="flex flex-col min-h-screen dark:text-white">
-      {/* Navbar */}
-
       {/* Main Content */}
       <div className="flex-grow flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl border border-gray-300 shadow-md p-6 rounded-md bg-white">
@@ -52,10 +50,7 @@ function Signup() {
             Signup
           </h3>
 
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-6"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Full Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -65,11 +60,11 @@ function Signup() {
                 type="text"
                 placeholder="Enter your full name"
                 className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-orange-500 focus:border-orange-500"
-                {...register("fullname", { required: true })}
+                {...register("fullname", { required: "Full name is required" })}
               />
               {errors.fullname && (
                 <p className="text-sm text-red-500 mt-1">
-                  This field is required
+                  {errors.fullname.message}
                 </p>
               )}
             </div>
@@ -83,11 +78,17 @@ function Signup() {
                 type="email"
                 placeholder="Enter your email"
                 className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-orange-500 focus:border-orange-500"
-                {...register("email", { required: true })}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                    message: "Enter a valid email address"
+                  }
+                })}
               />
               {errors.email && (
                 <p className="text-sm text-red-500 mt-1">
-                  This field is required
+                  {errors.email.message}
                 </p>
               )}
             </div>
@@ -101,11 +102,11 @@ function Signup() {
                 type="password"
                 placeholder="Enter your password"
                 className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-orange-500 focus:border-orange-500"
-                {...register("password", { required: true })}
+                {...register("password", { required: "Password is required" })}
               />
               {errors.password && (
                 <p className="text-sm text-red-500 mt-1">
-                  This field is required
+                  {errors.password.message}
                 </p>
               )}
             </div>

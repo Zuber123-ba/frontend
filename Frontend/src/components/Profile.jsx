@@ -39,7 +39,7 @@ const planConfig = {
   },
 };
 
-const UPDATE_MEAL_COUNT_URL = "https://khanakhazana-4wqp.onrender.com/user/updateuses";
+const UPDATE_MEAL_COUNT_URL = "http://localhost:4000/user/updateuses";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -57,7 +57,7 @@ const Profile = () => {
 
   const fetchKitchens = useCallback(async () => {
     try {
-      const res = await axios.get("https://khanakhazana-4wqp.onrender.com/kitchen");
+      const res = await axios.get("http://localhost:4000/kitchen");
       setKitchens(res.data);
       setFilteredKitchens(res.data);
     } catch (err) {
@@ -138,7 +138,7 @@ const Profile = () => {
         }
       };
       await axios.post(
-        `https://khanakhazana-4wqp.onrender.com/kitchen/${selectedKitchen}/transactions`,
+        `http://localhost:4000/kitchen/${selectedKitchen}/transactions`,
         payload
       );
     } catch {

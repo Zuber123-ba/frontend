@@ -1,6 +1,7 @@
 import React from 'react'
 import { Navigate, Route, Routes } from "react-router-dom"
 import Home from './home/Home'
+
 import Kitchen from './Kitchen/Kitchen'
 import Membership from './components/Membership';
 import Basic from './components/Basic';

@@ -19,7 +19,7 @@ const KitchenLogin = () => {
     e.preventDefault();
   
     try {
-      const response = await axios.post('https://khanakhazana-4wqp.onrender.com/kitchen/login', formData);
+      const response = await axios.post('http://localhost:4000/kitchen/login', formData);
   
       if (response.data && response.data.kitchen) {  // Fix here
         toast.success('Login successful');

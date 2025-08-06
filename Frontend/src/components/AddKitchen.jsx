@@ -37,7 +37,7 @@ const KitchenSignup = () => {
     });
 
     try {
-      const response = await axios.post('https://khanakhazana-4wqp.onrender.com/kitchen/signup', data, {
+      const response = await axios.post('http://localhost:4000/kitchen/signup', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 

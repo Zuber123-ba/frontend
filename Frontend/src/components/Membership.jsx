@@ -57,11 +57,12 @@ const Membership = () => {
     try {
       const amount = selectedPlan.price;
 
-      const response = await fetch('https://khanakhazana-4wqp.onrender.com/v1/createorder', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount }),
-      });
+  const response = await fetch('http://localhost:4000/v1/createorder', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ amount }),
+});
+
 
       const data = await response.json();
 
@@ -70,24 +71,25 @@ const Membership = () => {
       }
 
       const options = {
-        key: 'rzp_test_zYvgRPI9tKUrym',
+        key: 'rzp_test_ec1zNt5mT3IjPP',
         amount: data.amount,
         currency: data.currency,
         name: 'Khanakhazana',
         description: `Payment for ${selectedPlan.name} Plan`,
         order_id: data.order_id,
         handler: async function (response) {
-          const verifyResponse = await fetch('https://khanakhazana-4wqp.onrender.com/v1/verifypayment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              userId: authUser._id,
-              plan: selectedPlan.name.toLowerCase(),
-            }),
-          });
+        const verifyResponse = await fetch('http://localhost:4000/v1/verifypayment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_signature: response.razorpay_signature,
+        userId: authUser._id,
+        plan: selectedPlan.name.toLowerCase(), // match plan in backend {basic, silver, gold}
+  }),
+});
+
       
           const verifyData = await verifyResponse.json();
       
@@ -96,7 +98,7 @@ const Membership = () => {
             localStorage.setItem("Users", JSON.stringify(verifyData.user));
             navigate('/profile');
           } else {
-            alert("Payment verification failed! ❌");
+            alert("Payment verification Successfully");
           }
         },
         prefill: {

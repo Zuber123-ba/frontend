@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../conetxt/language-context';
-import { getText } from '../../utils/languageutils';
+import { getText } from '../../utils/languageUtils';
 
 const HeroSection = () => {
   const navigate = useNavigate();

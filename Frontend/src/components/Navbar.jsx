@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, Globe, Sun, Moon, User } from 'lucide-react';
 import { useAuth } from '../conetxt/AuthProvider';
 import { useLanguage, languages } from '../conetxt/language-context';
-import { getText } from '../../utils/languageutils';
+import { getText } from '../../utils/languageUtils';
 import Login from '../components/Login';
 import toast from 'react-hot-toast';
 

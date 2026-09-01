@@ -9,7 +9,7 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import AuthProvider, { useAuth } from './conetxt/AuthProvider';
 import  { Toaster } from 'react-hot-toast';
-import Profile from './components/profile.jsx';
+import Profile from './components/Profile.jsx';
 import Aboutus from './components/Aboutus';
 import AdminPage from './components/AdminPage';
 import AddKitchen from './components/AddKitchen';

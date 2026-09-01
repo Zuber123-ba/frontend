@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { FiLoader } from 'react-icons/fi';
+import API_BASE_URL from '../config';
 
 const DAYS_OF_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -14,7 +15,7 @@ const KitchenMenuView = () => {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/kitchen/menu?kitchenId=${kitchenId}`);
+        const response = await axios.get(`${API_BASE_URL}/kitchen/menu?kitchenId=${kitchenId}`);
         
         const menuData = response.data;
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../config';
 
 const KitchenSignup = () => {
   const [formData, setFormData] = useState({
@@ -37,7 +38,7 @@ const KitchenSignup = () => {
     });
 
     try {
-      const response = await axios.post('http://localhost:4000/kitchen/signup', data, {
+      const response = await axios.post(`${API_BASE_URL}/kitchen/signup`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
+import API_BASE_URL from "../config";
 
 function Login({ isOpen, onClose, onLoginSuccess }) {
   const navigate = useNavigate();
@@ -20,8 +21,8 @@ function Login({ isOpen, onClose, onLoginSuccess }) {
     setIsSubmitting(true);
     try {
       const endpoint = isKitchenLogin 
-        ? "http://localhost:4000/kitchen/login"
-        : "http://localhost:4000/user/login";
+        ? `${API_BASE_URL}/kitchen/login`
+        : `${API_BASE_URL}/user/login`;
 
       const response = await axios.post(endpoint, {
         email: data.email,

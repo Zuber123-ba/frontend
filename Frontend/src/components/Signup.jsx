@@ -4,6 +4,7 @@ import Login from './Login';
 import toast from 'react-hot-toast';
 import axios from "axios";
 import { useLocation, useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../config';
 
 function Signup() {
   const location = useLocation();
@@ -23,7 +24,7 @@ function Signup() {
       password: data.password
     };
 
-    await axios.post("http://localhost:4000/user/signup", userInfo)
+    await axios.post(`${API_BASE_URL}/user/signup`, userInfo)
       .then((res) => {
         console.log(res.data);
         if (res.data) {

@@ -9,6 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import API_BASE_URL from "../config";
 
 const KitchenDashboard = () => {
   const [transactions, setTransactions] = useState([]);
@@ -28,7 +29,7 @@ const KitchenDashboard = () => {
         setKitchenName(storedKitchen.name || "Kitchen");
 
         const response = await axios.get(
-          `http://localhost:4000/kitchen/${storedKitchen._id}/transactions`
+          `${API_BASE_URL}/kitchen/${storedKitchen._id}/transactions`
         );
 
         if (response.data.transactions) {

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { FiEdit, FiSave, FiX, FiLoader } from "react-icons/fi";
+import API_BASE_URL from "../config";
 
 const DAYS_OF_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -25,7 +26,7 @@ function KitchenMenu() {
 
     try {
       setLoading(true);
-      const response = await axios.get(`https://khanakhazana-4wqp.onrender.com/kitchen/menu?kitchenId=${kitchenId}`);
+      const response = await axios.get(`${API_BASE_URL}/kitchen/menu?kitchenId=${kitchenId}`);
 
       const fullMenu = DAYS_OF_WEEK.map((day) => {
         const apiData = response.data.find((item) => item.day === day);
@@ -65,7 +66,7 @@ function KitchenMenu() {
       }));
 
       const { data } = await axios.put(
-        `http://localhost:4000/kitchen/menu`,
+        `${API_BASE_URL}/kitchen/menu`,
         { kitchenId, menu: menuToSave },
         { headers: { "Content-Type": "application/json" } }
       );

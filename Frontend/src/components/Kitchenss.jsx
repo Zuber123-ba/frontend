@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Cards from "../components/cards";
 import axios from "axios";
 import { Link } from 'react-router-dom';
+import API_BASE_URL from '../config';
 
 function Kitchenss() {
   const [kitchens, setKitchens] = useState([]);
@@ -11,7 +12,7 @@ function Kitchenss() {
   useEffect(() => {
     const getKitchens = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/kitchen");
+        const res = await axios.get(`${API_BASE_URL}/kitchen`);
         setKitchens(res.data);
       } catch (error) {
         console.error("Error fetching kitchen data:", error);
@@ -93,7 +94,7 @@ function Kitchenss() {
                 <div className="relative overflow-hidden rounded-t-2xl">
                   {item.images && item.images.length > 0 ? (
                     <img
-                      src={`http://localhost:4000/${item.images[0]}`}
+                      src={`${API_BASE_URL}/${item.images[0]}`}
                       alt={item.name}
                       className="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300"
                     />

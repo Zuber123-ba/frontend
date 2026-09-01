@@ -7,6 +7,7 @@ import {
   FiMail, FiCalendar, FiPackage, FiSettings,
   FiClock, FiLogOut, FiStar, FiSearch
 } from "react-icons/fi";
+import API_BASE_URL from "../config";
 
 const planConfig = {
   basic: {
@@ -39,7 +40,7 @@ const planConfig = {
   },
 };
 
-const UPDATE_MEAL_COUNT_URL = "http://localhost:4000/user/updateuses";
+const UPDATE_MEAL_COUNT_URL = `${API_BASE_URL}/user/updateuses`;
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -57,7 +58,7 @@ const Profile = () => {
 
   const fetchKitchens = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:4000/kitchen");
+      const res = await axios.get(`${API_BASE_URL}/kitchen`);
       setKitchens(res.data);
       setFilteredKitchens(res.data);
     } catch (err) {
@@ -138,7 +139,7 @@ const Profile = () => {
         }
       };
       await axios.post(
-        `http://localhost:4000/kitchen/${selectedKitchen}/transactions`,
+        `${API_BASE_URL}/kitchen/${selectedKitchen}/transactions`,
         payload
       );
     } catch {

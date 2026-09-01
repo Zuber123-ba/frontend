@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import API_BASE_URL from '../config';
 
 const KitchenLogin = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const KitchenLogin = () => {
     e.preventDefault();
   
     try {
-      const response = await axios.post('http://localhost:4000/kitchen/login', formData);
+      const response = await axios.post(`${API_BASE_URL}/kitchen/login`, formData);
   
       if (response.data && response.data.kitchen) {  // Fix here
         toast.success('Login successful');

@@ -38,6 +38,14 @@ app.get("/", (_req, res) => {
     res.status(200).json({ status: "ok", service: "food-treasure-backend" });
 });
 
+app.get("/health", (_req, res) => {
+    const connected = mongoose.connection.readyState === 1;
+    res.status(connected ? 200 : 503).json({
+        status: connected ? "ok" : "degraded",
+        database: connected ? "connected" : "disconnected",
+    });
+});
+
 // ✅ Register all routes
 app.use("/kitchen", kitchenRoute);
 app.use("/kitchen/menu", menuRoute);  // ✅ Ensure the menu route is registered under `/kitchen/menu`

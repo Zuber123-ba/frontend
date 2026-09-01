@@ -1,5 +1,6 @@
 import User from "../model/user.model.js";
 import bcryptjs from "bcryptjs";
+import mongoose from "mongoose";
 
 // ➤ Meal Counts Based on Plans
 const PLAN_MEAL_COUNTS = {
@@ -20,6 +21,9 @@ export const signup = async (req, res) => {
     }
 
     try {
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(503).json({ message: "Database is unavailable. Please try again later." });
+        }
         const normalizedEmail = email.trim().toLowerCase();
         const existingUser = await User.findOne({ email: normalizedEmail });
 
@@ -69,6 +73,9 @@ export const login = async (req, res) => {
     }
 
     try {
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(503).json({ message: "Database is unavailable. Please try again later." });
+        }
         const existingUser = await User.findOne({ email: email.trim().toLowerCase() });
 
         if (!existingUser) {

@@ -21,15 +21,22 @@ app.use(express.json());
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
-const URI = process.env.MongoDBURI;
+const URI = process.env.MONGODB_URI || process.env.MongoDBURI;
 
-// Connecting to MongoDB
-try {
-    mongoose.connect(URI);
-    console.log("Connected to database");
-} catch (error) {
-    console.log("Error:", error);
+mongoose.connection.on("connected", () => console.log("Connected to database"));
+mongoose.connection.on("error", (error) => console.error("Database connection error:", error.message));
+
+if (URI) {
+    mongoose.connect(URI).catch((error) => {
+        console.error("Database connection failed:", error.message);
+    });
+} else {
+    console.error("MongoDB URI is not configured");
 }
+
+app.get("/", (_req, res) => {
+    res.status(200).json({ status: "ok", service: "food-treasure-backend" });
+});
 
 // ✅ Register all routes
 app.use("/kitchen", kitchenRoute);

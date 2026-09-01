@@ -3,6 +3,9 @@ import Slider from 'react-slick';
 import { useAuth } from '../conetxt/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import plans from '../../public/plans.json';
+import API_BASE_URL from '../config';
+
+const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_ec1zNt5mT3IjPP';
 
 const Membership = () => {
   const [authUser] = useAuth();
@@ -71,7 +74,7 @@ const Membership = () => {
       }
 
       const options = {
-        key: 'rzp_test_ec1zNt5mT3IjPP',
+        key: RAZORPAY_KEY_ID,
         amount: data.amount,
         currency: data.currency,
         name: 'Khanakhazana',

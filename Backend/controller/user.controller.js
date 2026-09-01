@@ -12,8 +12,16 @@ const PLAN_MEAL_COUNTS = {
 export const signup = async (req, res) => {
     const { fullname, email, password, plan } = req.body;
 
+    if (!fullname?.trim() || !email?.trim() || !password) {
+        return res.status(400).json({ message: "Full name, email, and password are required" });
+    }
+    if (password.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+
     try {
-        const existingUser = await User.findOne({ email });
+        const normalizedEmail = email.trim().toLowerCase();
+        const existingUser = await User.findOne({ email: normalizedEmail });
 
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
@@ -25,7 +33,7 @@ export const signup = async (req, res) => {
 
         const newUser = new User({
             fullname,
-            email,
+            email: normalizedEmail,
             password: hashPassword,
             role: "user",
             plan: plan || "null",
@@ -56,8 +64,12 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
     const { email, password } = req.body;
 
+    if (!email?.trim() || !password) {
+        return res.status(400).json({ message: "Email and password are required" });
+    }
+
     try {
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ email: email.trim().toLowerCase() });
 
         if (!existingUser) {
             return res.status(404).json({ message: "User not found" });
